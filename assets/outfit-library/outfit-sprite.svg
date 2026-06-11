@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="men-jacket" viewBox="0 0 120 120">
+    <path d="M38 18 22 32l-9 52 18 6 7-38v48h44V52l7 38 18-6-9-52-16-14-15 8H53z" fill="#6f8f72" stroke="#5b473d" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M53 26 60 45l7-19M60 45v55" fill="none" stroke="#5b473d" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M38 72h12M70 72h12" stroke="#5b473d" stroke-width="2.2" stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="men-shirt" viewBox="0 0 120 120">
+    <path d="M38 20h44l19 18-14 18-9-8v50H42V48l-9 8-14-18z" fill="#d7eef1" stroke="#5b473d" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M46 20 60 37l14-17M60 37v61" fill="none" stroke="#5b473d" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M50 62h8M68 62h8" stroke="#5b473d" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="men-sportswear" viewBox="0 0 120 120">
+    <path d="M35 16h50l17 20-13 17-9-7v54H40V46l-9 7-13-17z" fill="#4f95a5" stroke="#5b473d" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M44 18c3 18 29 18 32 0" fill="#fff8e8" stroke="#5b473d" stroke-width="2.2"/>
+    <path d="M50 56h20M50 70h29" stroke="#fff8e8" stroke-width="4" stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="men-sneakers" viewBox="0 0 120 120">
+    <path d="M15 65c19 3 31-1 40 15 5 10-2 18-15 18H18c-8 0-12-5-10-13z" fill="#6d91b8" stroke="#5b473d" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M65 65c19 3 31-1 40 15 5 10-2 18-15 18H68c-8 0-12-5-10-13z" fill="#6d91b8" stroke="#5b473d" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M14 87h42M64 87h42M29 70l12 9M79 70l12 9" stroke="#fff8e8" stroke-width="3" stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="men-casual-shoes" viewBox="0 0 120 120">
+    <path d="M14 70c22 6 34-2 48 17 6 8-1 17-14 17H19c-10 0-15-6-12-15z" fill="#9a6b46" stroke="#5b473d" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M64 70c22 6 34-2 48 17 6 8-1 17-14 17H69c-10 0-15-6-12-15z" fill="#9a6b46" stroke="#5b473d" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M14 91h49M64 91h49" stroke="#3f3029" stroke-width="3" stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="women-coat" viewBox="0 0 120 120">
+    <path d="M39 17 23 31l-9 53 18 8 7-38 1 50h40l1-50 7 38 18-8-9-53-16-14-14 9H53z" fill="#c79ac7" stroke="#5b473d" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M52 25 60 43l8-18M60 43v61" fill="none" stroke="#5b473d" stroke-width="2.4" stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="women-dress" viewBox="0 0 120 120">
+    <path d="M45 16h30l8 25 22 62H15l22-62z" fill="#f2d98a" stroke="#5b473d" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M45 16c3 17 27 17 30 0M34 72h52" fill="none" stroke="#5b473d" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M26 99h68" stroke="#d96d78" stroke-width="5" stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="women-crop-top" viewBox="0 0 120 120">
+    <path d="M38 30h44l15 20-13 14-8-8v34H44V56l-8 8-13-14z" fill="#f2a5bb" stroke="#5b473d" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M49 30c3 14 19 14 22 0M45 89h30" stroke="#5b473d" stroke-width="2.3" stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="women-vest" viewBox="0 0 120 120">
+    <path d="M42 22h36l14 78H28z" fill="#fff1d8" stroke="#5b473d" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M45 22c3 18 27 18 30 0M48 70h12" stroke="#5b473d" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M74 62h14v18H74z" fill="#d96d78" stroke="#5b473d" stroke-width="2"/>
+  </symbol>
+
+  <symbol id="women-casual-shoes" viewBox="0 0 120 120">
+    <path d="M18 64c18 4 28 1 38 16 6 9 0 18-13 18H21c-9 0-14-5-12-14z" fill="#d7c2a5" stroke="#5b473d" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M66 64c18 4 28 1 38 16 6 9 0 18-13 18H69c-9 0-14-5-12-14z" fill="#d7c2a5" stroke="#5b473d" stroke-width="3" stroke-linejoin="round"/>
+  </symbol>
+
+  <symbol id="women-sneakers" viewBox="0 0 120 120">
+    <path d="M15 64c18 3 30 0 42 15 7 9 0 19-14 19H18c-9 0-14-5-11-14z" fill="#8fb0c8" stroke="#5b473d" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M64 64c18 3 30 0 42 15 7 9 0 19-14 19H67c-9 0-14-5-11-14z" fill="#8fb0c8" stroke="#5b473d" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M27 71l13 9M76 71l13 9" stroke="#fff8e8" stroke-width="3" stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="swimwear" viewBox="0 0 120 120">
+    <path d="M32 23c12 7 21 7 28 0 7 7 16 7 28 0l13 66c-17 10-33 10-41-8-8 18-24 18-41 8z" fill="#12aeb9" stroke="#5b473d" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M41 39c8 4 14 4 19 0 5 4 11 4 19 0" fill="none" stroke="#fff8e8" stroke-width="3" stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="men-beach-shorts" viewBox="0 0 120 120">
+    <path d="M28 26h64l8 72H68l-8-38-8 38H20z" fill="#f09745" stroke="#5b473d" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M28 35h64M47 47h14M77 47h10" stroke="#5b473d" stroke-width="2.4" stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="umbrella" viewBox="0 0 120 120">
+    <path d="M16 57c8-27 30-41 44-41s36 14 44 41c-15-6-24-5-31 0-8-6-18-6-26 0-7-5-16-6-31 0z" fill="#efd9df" stroke="#5b473d" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M60 16v68c0 15 21 14 21 0" fill="none" stroke="#5b473d" stroke-width="4" stroke-linecap="round"/>
+    <path d="M60 18c-8 13-12 26-13 39M60 18c8 13 12 26 13 39" stroke="#5b473d" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="sun-protection" viewBox="0 0 120 120">
+    <circle cx="40" cy="39" r="18" fill="#f2cf62" stroke="#5b473d" stroke-width="3"/>
+    <path d="M40 8v13M40 57v13M9 39h13M58 39h13M18 17l9 9M53 52l9 9M62 17l-9 9M27 52l-9 9" stroke="#f2cf62" stroke-width="5" stroke-linecap="round"/>
+    <path d="M73 44h24l10 50H63z" fill="#fff8e8" stroke="#5b473d" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M73 44c2 12 22 12 24 0M76 68h18" stroke="#5b473d" stroke-width="2.2" stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="gloves" viewBox="0 0 120 120">
+    <path d="M34 24c8 0 13 5 13 13v22c0 6 8 6 8 0V28c0-7 5-12 12-12s12 5 12 12v32c0 5 7 5 7 0V40c0-7 5-12 12-12s12 5 12 12v36c0 20-14 31-34 31H57c-22 0-35-13-35-35V37c0-8 5-13 12-13z" fill="#d9bea0" stroke="#5b473d" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M47 88h38" stroke="#5b473d" stroke-width="2.4" stroke-linecap="round"/>
+  </symbol>
+</svg>

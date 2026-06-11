@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>日本一週旅遊天氣</title>
+    <link rel="preconnect" href="https://api.open-meteo.com" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero" aria-labelledby="page-title">
+        <img class="hero__image" src="assets/japan-prefecture-hero.jpg" alt="日本各地代表元素旅遊拼貼橫幅" />
+        <div class="hero-scene artwork-tokyo" id="hero-scene" aria-hidden="true">
+          <span class="sun"></span>
+          <span class="landmark main"></span>
+          <span class="landmark side"></span>
+          <span class="motif"></span>
+          <span class="cloud one"></span>
+          <span class="cloud two"></span>
+          <span class="cloud three"></span>
+        </div>
+        <div class="hero__shade"></div>
+        <div class="hero__content">
+          <p class="eyebrow">Japan Travel Forecast</p>
+          <h1 id="page-title" data-i18n="pageTitle">日本一週旅遊天氣</h1>
+          <p class="hero__copy" data-i18n="heroCopy">選好即將出發的地點，帶著剛剛好的衣著與好心情上路。</p>
+          <p class="hero__destination" id="hero-destination">關東地區｜東京鐵塔與晴空塔</p>
+        </div>
+        <div class="windbell" aria-hidden="true">
+          <span></span>
+          <i></i>
+        </div>
+      </section>
+
+      <section class="planner" aria-label="日本地區天氣規劃">
+        <aside class="selector-panel">
+          <div class="language-switch" aria-label="語言切換">
+            <span id="language-label" data-i18n="languageLabel">語言</span>
+            <div class="language-options" role="group" aria-labelledby="language-label">
+              <button class="language-button is-active" type="button" data-lang="zh">中文</button>
+              <button class="language-button" type="button" data-lang="ja">日本語</button>
+              <button class="language-button" type="button" data-lang="en">English</button>
+            </div>
+          </div>
+
+          <div class="panel-title">
+            <span data-i18n="destination">目的地</span>
+            <strong id="selected-region-label">關東</strong>
+          </div>
+
+          <div class="field">
+            <label for="region-select" data-i18n="regionLabel">地區</label>
+            <select id="region-select"></select>
+          </div>
+
+          <div class="field">
+            <label for="place-select" data-i18n="placeLabel">城市／景點</label>
+            <select id="place-select"></select>
+          </div>
+
+          <div class="quick-regions" id="quick-regions" aria-label="快速切換地區"></div>
+        </aside>
+
+        <section class="forecast-view">
+          <div class="place-banner">
+            <img class="place-thumbnail" id="place-thumbnail" src="assets/place-thumbnails/tokyo.jpg" alt="東京都縮圖" />
+            <div class="place-summary">
+              <p id="region-kicker">關東地區</p>
+              <h2 id="place-name">東京都</h2>
+              <span id="place-feature">東京鐵塔與晴空塔</span>
+            </div>
+            <div class="current-chip" id="current-chip">
+              <span>載入中</span>
+              <strong>--°C</strong>
+              <small>體感 --°C</small>
+            </div>
+          </div>
+
+          <div class="toolbar">
+            <div>
+              <p data-i18n="weekTitle">未來一週</p>
+              <strong id="forecast-updated">天氣資料同步中</strong>
+            </div>
+            <button class="refresh-button" id="refresh-button" type="button" aria-label="重新整理天氣">
+              <span aria-hidden="true">↻</span>
+            </button>
+          </div>
+
+          <div class="forecast-grid" id="forecast-grid" aria-live="polite"></div>
+
+          <section class="outfit-summary" aria-labelledby="outfit-title">
+            <div class="outfit-copy">
+              <p data-i18n="outfitEyebrow">一週穿搭總結</p>
+              <h3 id="outfit-title">天氣分析中</h3>
+              <span id="outfit-description">正在整理這週最適合的旅行衣著。</span>
+              <div class="outfit-tags" id="outfit-tags"></div>
+            </div>
+            <div class="outfit-visual" aria-label="男女旅行角色穿搭展示">
+              <img class="outfit-look-image" id="outfit-look-image" src="assets/outfit-looks/city.png" alt="" aria-hidden="true" />
+            </div>
+          </section>
+
+          <section class="local-specialties" aria-labelledby="specialties-title">
+            <div class="local-specialties__head">
+              <p data-i18n="specialtyEyebrow">當地名產建議</p>
+              <h3 id="specialties-title" data-i18n="specialtyTitle">必吃美食與伴手禮</h3>
+            </div>
+            <div class="specialty-grid" id="specialty-grid"></div>
+          </section>
+
+          <section class="live-cameras" aria-labelledby="live-cameras-title">
+            <div class="live-cameras__head">
+              <div>
+                <p data-i18n="liveEyebrow">當地即時影像</p>
+                <h3 id="live-cameras-title" data-i18n="liveTitle">附近熱門直播</h3>
+              </div>
+              <span>YouTube</span>
+            </div>
+            <div class="live-cameras__grid" id="live-cameras-grid"></div>
+          </section>
+        </section>
+      </section>
+    </main>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
