@@ -6,7 +6,7 @@ $ErrorActionPreference = "Stop"
 
 $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $DeployDir = Join-Path $Root "deploy-cloudflare-pages"
-$RequiredItems = @("index.html", "app.js", "styles.css", "assets")
+$RequiredItems = @("index.html", "app.js", "styles.css", "assets", "_worker.js")
 
 Set-Location $Root
 $env:Path = [Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [Environment]::GetEnvironmentVariable("Path", "User")
@@ -26,7 +26,7 @@ if (Test-Path -LiteralPath $DeployDir) {
 }
 
 New-Item -ItemType Directory -Path $DeployDir | Out-Null
-Copy-Item -LiteralPath (Join-Path $Root "index.html"), (Join-Path $Root "app.js"), (Join-Path $Root "styles.css") -Destination $DeployDir -Force
+Copy-Item -LiteralPath (Join-Path $Root "index.html"), (Join-Path $Root "app.js"), (Join-Path $Root "styles.css"), (Join-Path $Root "_worker.js") -Destination $DeployDir -Force
 Copy-Item -LiteralPath (Join-Path $Root "assets") -Destination $DeployDir -Recurse -Force
 
 git add .

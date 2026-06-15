@@ -275,6 +275,20 @@ const uiText = {
     outfitEyebrow: "一週穿搭總結",
     specialtyEyebrow: "當地名產建議",
     specialtyTitle: "必吃美食與伴手禮",
+    threadsEyebrow: "Threads 熱門討論",
+    threadsTitle: "目的地最新熱帖",
+    threadsLoading: "Threads 資料同步中",
+    threadsMissingConfig: "Threads API 尚未設定。請先在 Cloudflare Pages 加入 THREADS_ACCESS_TOKEN。",
+    threadsEmpty: "目前沒有找到符合條件的 Threads 貼文。",
+    threadsError: "目前無法取得 Threads 討論串。",
+    threadCategoryAll: "所有",
+    threadCategoryFood: "美食",
+    threadCategoryWeather: "天氣（景色）",
+    threadCategoryTraffic: "交通",
+    threadBucket24h: "24hr",
+    threadBucket3d: "3 days",
+    threadBucket1w: "1 week",
+    threadHeatLabel: "熱度 {value}",
     liveEyebrow: "當地即時影像",
     liveTitle: "附近熱門直播",
     regionSuffix: "地區",
@@ -336,6 +350,20 @@ const uiText = {
     outfitEyebrow: "週間コーデまとめ",
     specialtyEyebrow: "ご当地おすすめ",
     specialtyTitle: "名物グルメとお土産",
+    threadsEyebrow: "Threads 人気の話題",
+    threadsTitle: "目的地の最新注目投稿",
+    threadsLoading: "Threads の投稿を同期中",
+    threadsMissingConfig: "Threads API が未設定です。Cloudflare Pages に THREADS_ACCESS_TOKEN を追加してください。",
+    threadsEmpty: "条件に合う Threads 投稿が見つかりません。",
+    threadsError: "Threads の話題を取得できません。",
+    threadCategoryAll: "すべて",
+    threadCategoryFood: "グルメ",
+    threadCategoryWeather: "天気・景色",
+    threadCategoryTraffic: "交通",
+    threadBucket24h: "24hr",
+    threadBucket3d: "3 days",
+    threadBucket1w: "1 week",
+    threadHeatLabel: "注目度 {value}",
     liveEyebrow: "現地ライブ映像",
     liveTitle: "近くの人気ライブ",
     regionSuffix: "エリア",
@@ -397,6 +425,20 @@ const uiText = {
     outfitEyebrow: "Weekly outfit summary",
     specialtyEyebrow: "Local recommendations",
     specialtyTitle: "Must-try food and souvenirs",
+    threadsEyebrow: "Popular on Threads",
+    threadsTitle: "Latest destination buzz",
+    threadsLoading: "Syncing Threads posts",
+    threadsMissingConfig: "Threads API is not configured. Add THREADS_ACCESS_TOKEN to Cloudflare Pages first.",
+    threadsEmpty: "No matching Threads posts were found.",
+    threadsError: "Unable to load Threads discussions right now.",
+    threadCategoryAll: "All",
+    threadCategoryFood: "Food",
+    threadCategoryWeather: "Weather / views",
+    threadCategoryTraffic: "Traffic",
+    threadBucket24h: "24hr",
+    threadBucket3d: "3 days",
+    threadBucket1w: "1 week",
+    threadHeatLabel: "Heat {value}",
     liveEyebrow: "Local live views",
     liveTitle: "Nearby popular livestreams",
     regionSuffix: "region",
@@ -526,6 +568,10 @@ const placeThumbnail = document.querySelector("#place-thumbnail");
 const heroScene = document.querySelector("#hero-scene");
 const heroDestination = document.querySelector("#hero-destination");
 const currentChip = document.querySelector("#current-chip");
+const threadCategoryTabs = document.querySelector("#thread-category-tabs");
+const threadCategoryButtons = document.querySelectorAll("[data-thread-category]");
+const threadsStatus = document.querySelector("#threads-status");
+const threadsGrid = document.querySelector("#threads-grid");
 const liveCameraGrid = document.querySelector("#live-cameras-grid");
 const specialtyGrid = document.querySelector("#specialty-grid");
 const outfitTitle = document.querySelector("#outfit-title");
@@ -548,7 +594,9 @@ let dateFormatter = new Intl.DateTimeFormat(languageLocales[currentLanguage].loc
 
 let selectedRegionId = "kanto";
 let selectedPlaceId = "tokyo";
+let selectedThreadCategory = "all";
 let activeRequestId = 0;
+let activeThreadsRequestId = 0;
 
 function init() {
   renderStaticText();
@@ -582,7 +630,20 @@ function renderStaticText() {
     button.setAttribute("aria-pressed", String(button.dataset.lang === currentLanguage));
   });
 
+  threadCategoryButtons.forEach((button) => {
+    button.textContent = t(`threadCategory${toPascalCase(button.dataset.threadCategory)}`);
+    button.classList.toggle("is-active", button.dataset.threadCategory === selectedThreadCategory);
+    button.setAttribute("aria-pressed", String(button.dataset.threadCategory === selectedThreadCategory));
+  });
+
   refreshButton.setAttribute("aria-label", t("refreshWeather"));
+}
+
+function toPascalCase(value) {
+  return value
+    .split("-")
+    .map((part) => `${part.charAt(0).toUpperCase()}${part.slice(1)}`)
+    .join("");
 }
 
 function getRegionName(region) {
@@ -666,6 +727,14 @@ function bindEvents() {
     updateView();
   });
 
+  threadCategoryTabs.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-thread-category]");
+    if (!button) return;
+    selectedThreadCategory = button.dataset.threadCategory;
+    renderStaticText();
+    renderThreadsDiscussions(getPlace());
+  });
+
   refreshButton.addEventListener("click", updateView);
 
   languageButtons.forEach((button) => {
@@ -692,6 +761,138 @@ function getPlace() {
 
 function getDefaultPlaceId(region) {
   return region.defaultPlaceId ?? region.places[0].id;
+}
+
+async function renderThreadsDiscussions(place) {
+  const requestId = ++activeThreadsRequestId;
+  const placeLabel = getPlaceName(place);
+  threadsStatus.textContent = t("threadsLoading");
+  threadsGrid.innerHTML = "";
+
+  try {
+    const apiBase = getThreadsApiBase();
+    const params = new URLSearchParams({
+      place: place.id,
+      category: selectedThreadCategory,
+      lang: currentLanguage
+    });
+    const response = await fetch(`${apiBase}/api/threads?${params}`);
+    const payload = await response.json().catch(() => ({}));
+    if (requestId !== activeThreadsRequestId) return;
+
+    if (!response.ok) {
+      threadsStatus.textContent = payload.code === "THREADS_NOT_CONFIGURED" ? t("threadsMissingConfig") : t("threadsError");
+      return;
+    }
+
+    const posts = rankThreadPosts(payload.posts ?? []).slice(0, 5);
+    if (!posts.length) {
+      threadsStatus.textContent = t("threadsEmpty");
+      return;
+    }
+
+    threadsStatus.textContent = `${placeLabel}｜${t(`threadCategory${toPascalCase(selectedThreadCategory)}`)}｜${posts.length} Threads`;
+    threadsGrid.innerHTML = posts.map(renderThreadCard).join("");
+  } catch (error) {
+    if (requestId !== activeThreadsRequestId) return;
+    threadsStatus.textContent = t("threadsError");
+  }
+}
+
+function getThreadsApiBase() {
+  return location.hostname === "my-travel-web.pages.dev" ? "" : "https://my-travel-web.pages.dev";
+}
+
+function rankThreadPosts(posts) {
+  const now = Date.now();
+  const oneDay = 24 * 60 * 60 * 1000;
+  const threeDays = 3 * oneDay;
+  const oneWeek = 7 * oneDay;
+  const normalized = posts
+    .map((post, index) => normalizeThreadPost(post, index, now, oneDay, threeDays, oneWeek))
+    .filter((post) => post.bucket !== "older");
+  const max24hHeat = Math.max(1, ...normalized.filter((post) => post.bucket === "24h").map((post) => post.heat));
+
+  return normalized.sort((a, b) => {
+    const aPriority = getThreadPriority(a, max24hHeat);
+    const bPriority = getThreadPriority(b, max24hHeat);
+    if (aPriority !== bPriority) return bPriority - aPriority;
+    if (a.timestamp !== b.timestamp) return b.timestamp - a.timestamp;
+    return b.heat - a.heat;
+  });
+}
+
+function normalizeThreadPost(post, index, now, oneDay, threeDays, oneWeek) {
+  const timestamp = Date.parse(post.timestamp ?? post.created_time ?? "");
+  const age = Number.isFinite(timestamp) ? now - timestamp : Number.POSITIVE_INFINITY;
+  let bucket = "older";
+  if (age <= oneDay) bucket = "24h";
+  else if (age <= threeDays) bucket = "3d";
+  else if (age <= oneWeek) bucket = "1w";
+
+  const heat =
+    Number(post.like_count ?? post.likes ?? 0) +
+    Number(post.reply_count ?? post.replies ?? post.comments_count ?? 0) * 2 +
+    Number(post.repost_count ?? post.reposts ?? 0) * 2 +
+    Number(post.quote_count ?? post.quotes ?? 0) * 2 +
+    Number(post.view_count ?? post.views ?? 0) * 0.01 +
+    Math.max(0, 60 - index);
+
+  return {
+    id: post.id ?? `${timestamp}-${index}`,
+    text: post.text ?? post.caption ?? "",
+    username: post.username ?? post.owner?.username ?? "Threads",
+    permalink: post.permalink ?? post.url ?? "https://www.threads.net/",
+    timestamp: Number.isFinite(timestamp) ? timestamp : 0,
+    heat: Math.round(heat),
+    bucket
+  };
+}
+
+function getThreadPriority(post, max24hHeat) {
+  if (post.bucket === "24h") return 3;
+  if (post.bucket === "3d") return post.heat > max24hHeat * 1.2 ? 3.5 : 2;
+  if (post.bucket === "1w") return post.heat > max24hHeat * 1.5 ? 3.25 : 1;
+  return 0;
+}
+
+function renderThreadCard(post) {
+  const bucketLabel = post.bucket === "24h" ? t("threadBucket24h") : post.bucket === "3d" ? t("threadBucket3d") : t("threadBucket1w");
+  const date = post.timestamp
+    ? new Date(post.timestamp).toLocaleString(languageLocales[currentLanguage].locale, { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" })
+    : "";
+  const text = post.text || post.permalink;
+
+  return `
+    <a class="thread-card" href="${escapeAttribute(post.permalink)}" target="_blank" rel="noopener noreferrer">
+      <div class="thread-card__meta">
+        <span>${escapeHtml(bucketLabel)}</span>
+        <span>${escapeHtml(t("threadHeatLabel", { value: post.heat }))}</span>
+      </div>
+      <strong>${escapeHtml(truncateText(text, 92))}</strong>
+      <p>@${escapeHtml(post.username)}</p>
+      <small>${escapeHtml(date)}</small>
+    </a>
+  `;
+}
+
+function truncateText(text, maxLength) {
+  return text.length > maxLength ? `${text.slice(0, maxLength - 1)}…` : text;
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function escapeAttribute(value) {
+  const text = String(value);
+  if (!/^https:\/\/(www\.)?threads\.(net|com)\//.test(text)) return "https://www.threads.net/";
+  return escapeHtml(text);
 }
 
 function renderLiveCameras(place) {
@@ -779,6 +980,7 @@ async function updateView() {
   placeThumbnail.alt = `${placeLabel}${t("thumbnailSuffix")}`;
   heroScene.className = `hero-scene ${place.art}`;
   heroDestination.textContent = `${regionName}${currentLanguage === "en" ? " " : ""}${t("regionSuffix")}｜${featureLabel}`;
+  renderThreadsDiscussions(place);
   renderLiveCameras(place);
   renderLocalSpecialties(place);
   currentChip.innerHTML = `<span>${t("loading")}</span><strong>--°C</strong><small>${t("feelsLike")} --°C</small>`;
