@@ -5,14 +5,14 @@
 ## 包含內容
 
 - 完整網站原始碼與圖片資產
-- Git repository 與 commit 歷史
-- GitHub remote 設定
 - 本機啟動腳本
 - GitHub Pages／Cloudflare Pages 同步部署腳本
 - Cloudflare Pages Worker 原始碼
+- GitHub 原始碼來源與 commit 識別檔
 
 不包含：
 
+- `.git` 內部資料夾，避免 Windows 解壓縮路徑過長
 - GitHub 登入憑證
 - Cloudflare OAuth 憑證
 - Threads API access token
@@ -20,8 +20,8 @@
 
 ## 新電腦操作
 
-1. 將 zip 完整解壓縮，不要只挑選部分檔案。
-2. 確認檔案總管已顯示隱藏項目，解壓後應存在 `.git` 資料夾。
+1. 建議解壓到較短的路徑，例如 `C:\TravelWeb`。
+2. 將 zip 完整解壓縮，不要只挑選部分檔案。
 3. 在專案資料夾開啟 PowerShell。
 4. 執行：
 
@@ -57,7 +57,9 @@ http://127.0.0.1:4173/
 .\build-migration-package.ps1
 ```
 
-腳本會把 Git 已追蹤檔案與 `.git` 歷史打包，但不會包含 `.wrangler`、log、部署暫存資料或環境變數。
+腳本會打包 Git 已追蹤檔案，但不包含 `.git`、`.wrangler`、log、部署暫存資料或環境變數。
+
+新電腦執行 `setup-new-windows.ps1` 時，會從 GitHub 恢復 `.git` 與完整 commit 歷史。
 
 ## Threads API
 

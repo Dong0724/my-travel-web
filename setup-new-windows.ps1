@@ -42,19 +42,24 @@ Ensure-WingetPackage -Command "git" -PackageId "Git.Git"
 Ensure-WingetPackage -Command "gh" -PackageId "GitHub.cli"
 Ensure-WingetPackage -Command "node" -PackageId "OpenJS.NodeJS.LTS"
 
-if (-not (Test-Path -LiteralPath (Join-Path $Root ".git"))) {
-  throw "The .git folder is missing. Clone https://github.com/Dong0724/my-travel-web instead of using this incomplete folder."
-}
-
-$Remote = git remote get-url origin 2>$null
-if (-not $Remote) {
-  git remote add origin "https://github.com/Dong0724/my-travel-web.git"
-}
-
 gh auth status 2>$null
 if ($LASTEXITCODE -ne 0) {
   Write-Host "GitHub login is required. A browser authorization page will open."
   gh auth login --hostname github.com --web --git-protocol https
+}
+
+if (-not (Test-Path -LiteralPath (Join-Path $Root ".git"))) {
+  Write-Host "Restoring Git repository from GitHub..."
+  git init -b main
+  git remote add origin "https://github.com/Dong0724/my-travel-web.git"
+  git fetch origin main
+  git reset origin/main
+  git branch --set-upstream-to=origin/main main
+} else {
+  $Remote = git remote get-url origin 2>$null
+  if (-not $Remote) {
+    git remote add origin "https://github.com/Dong0724/my-travel-web.git"
+  }
 }
 
 npx --yes wrangler whoami *> $null

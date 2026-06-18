@@ -4,7 +4,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
-$ProjectName = "My Travel Web"
+$ProjectName = "TravelWeb"
 $DateStamp = Get-Date -Format "yyyyMMdd"
 
 Set-Location $Root
@@ -14,12 +14,8 @@ if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
   throw "Git is required to build the migration package."
 }
 
-if (-not (Test-Path -LiteralPath (Join-Path $Root ".git"))) {
-  throw "The .git folder is missing."
-}
-
 if (-not $OutputPath) {
-  $OutputPath = Join-Path (Split-Path -Parent $Root) "$ProjectName Windows10-11 Migration $DateStamp.zip"
+  $OutputPath = Join-Path (Split-Path -Parent $Root) "$ProjectName-Win-$DateStamp.zip"
 }
 
 $OutputPath = [IO.Path]::GetFullPath($OutputPath)
@@ -41,7 +37,8 @@ try {
     Copy-Item -LiteralPath $Source -Destination $Destination -Force
   }
 
-  Copy-Item -LiteralPath (Join-Path $Root ".git") -Destination $StageProject -Recurse -Force
+  $SourceCommit = git rev-parse HEAD
+  Set-Content -LiteralPath (Join-Path $StageProject "SOURCE-COMMIT.txt") -Value $SourceCommit -Encoding ASCII
 
   if (Test-Path -LiteralPath $OutputPath) {
     Remove-Item -LiteralPath $OutputPath -Force
