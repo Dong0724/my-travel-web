@@ -10,5 +10,6 @@ dist/
 *.log
 *.zip
 *.tmp
+SOURCE-COMMIT.txt
 Thumbs.db
 .DS_Store
